@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.springMongo.rafael.domain.Post;
 import com.springMongo.rafael.domain.User;
 import com.springMongo.rafael.dto.UserDTO;
 import com.springMongo.rafael.service.UserServices;
@@ -33,11 +34,10 @@ public class UserResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<User> finById(@PathVariable String id) {
+	public ResponseEntity<UserDTO> finById(@PathVariable String id) {
 
 		User obj = services.findId(id);
-		return ResponseEntity.ok().body(obj);
-
+		return ResponseEntity.ok().body(new UserDTO(obj));
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -58,13 +58,22 @@ public class UserResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> delete(@PathVariable String id, @RequestBody UserDTO newObj) {
+	public ResponseEntity<Void> delete(@PathVariable String id, @RequestBody UserDTO newObj)  {
 
 		User obj = services.fromDTO(newObj);
 		obj.setId(id);
 		obj = services.update(obj);
 		return ResponseEntity.noContent().build();
-		
+	}
+	
+	
+	//testar a url http://localhost:8080/users/"iduser"/posts
+	
+	@RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+	public ResponseEntity<List<Post>> findPost(@PathVariable String id) {
+
+		User obj = services.findId(id);
+		return ResponseEntity.ok().body(obj.getPosts());
 	}
 
 }
