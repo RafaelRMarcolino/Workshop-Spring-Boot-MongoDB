@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springMongo.rafael.domain.User;
+import com.springMongo.rafael.dto.UserDTO;
 import com.springMongo.rafael.repositories.UserRepositories;
 import com.springMongo.rafael.service.excepion.ObjectNotFoundException;
 
@@ -26,4 +27,14 @@ public class UserServices {
 		return user.orElseThrow(() -> new ObjectNotFoundException("Objeto nao encontrado"));
 	}
 
+	public User send(User user) {
+		
+		return user = repo.save(user);
+	}
+	
+	public User fromDTO(UserDTO objDTO) {
+		
+		return new User(objDTO.getId(), objDTO.getName(), objDTO.getEmail());
+	}
+	
 }
