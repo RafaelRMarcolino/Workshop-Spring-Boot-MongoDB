@@ -20,44 +20,39 @@ public class Instantiation implements CommandLineRunner {
 
 	@Autowired
 	private UserRepositories userRepo;
-	
+
 	@Autowired
 	private PostRepositories postRepo;
-	
+
 	@Override
 	public void run(String... args) throws Exception {
-		
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-		
+
 		userRepo.deleteAll();
 		postRepo.deleteAll();
 
-		
 		User us1 = new User(null, "polo", "polo@gmaill");
-		User us2 = new User(null, "polo", "polo@gmaill");		
+		User us2 = new User(null, "polo", "polo@gmaill");
 		User us3 = new User(null, "polo", "polo@gmaill");
-		
-		
+
 		Post pos1 = new Post(null, sdf.parse("25/05/2000"), "Partiu viagem", "Vou viajar", new AuthorDTO(us1));
 		Post pos2 = new Post(null, sdf.parse("25/05/2000"), "Partiu minas", "aeeee", new AuthorDTO(us1));
 		Post pos3 = new Post(null, sdf.parse("25/05/2000"), "Partiu japao", "bora andar de barco", new AuthorDTO(us1));
-		
+
 		CommentDTO cdt1 = new CommentDTO("Boa viajem mano", sdf.parse("24/04/2001"), new AuthorDTO(us1));
 		CommentDTO cdt2 = new CommentDTO("Valeu falo", sdf.parse("24/04/2001"), new AuthorDTO(us2));
-		
+
 		pos1.getComments().add(cdt1);
 		pos2.getComments().add(cdt2);
-		
+
 		postRepo.saveAll(Arrays.asList(pos1, pos2, pos3));
-		
+
 		us1.getPosts().addAll(Arrays.asList(pos1, pos2, pos3));
-		
 
 		userRepo.saveAll(Arrays.asList(us1, us2, us3));
 
-		
 	}
 
 }

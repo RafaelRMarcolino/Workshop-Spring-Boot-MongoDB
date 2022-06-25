@@ -1,5 +1,6 @@
 package com.springMongo.rafael.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,12 @@ public class PostServices {
 
 		Optional<Post> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto nao encontrado"));
+	}
+	
+	public List<Post> findByIdTitle(String text){
+		
+		return repo.findByTitleContainingIgnoreCase(text);
+		
 	}
 
 	
