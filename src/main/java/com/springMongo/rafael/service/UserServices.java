@@ -1,12 +1,14 @@
 package com.springMongo.rafael.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springMongo.rafael.domain.User;
 import com.springMongo.rafael.repositories.UserRepositories;
+import com.springMongo.rafael.service.excepion.ObjectNotFoundException;
 
 @Service
 public class UserServices {
@@ -16,7 +18,12 @@ public class UserServices {
 	
 	public List<User>  findAll(){
 		return repo.findAll();
+	}
+	
+	public User findId(String id) {
 		
+		Optional<User> user = repo.findById(id);
+		return user.orElseThrow(() -> new ObjectNotFoundException("Objeto nao encontrado"));
 	}
 
 }
