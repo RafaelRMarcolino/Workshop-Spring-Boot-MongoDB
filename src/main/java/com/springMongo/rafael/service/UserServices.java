@@ -13,28 +13,51 @@ import com.springMongo.rafael.service.excepion.ObjectNotFoundException;
 
 @Service
 public class UserServices {
-	
+
 	@Autowired
 	private UserRepositories repo;
-	
-	public List<User>  findAll(){
+
+	public List<User> findAll() {
 		return repo.findAll();
 	}
-	
+
 	public User findId(String id) {
-		
+
 		Optional<User> user = repo.findById(id);
 		return user.orElseThrow(() -> new ObjectNotFoundException("Objeto nao encontrado"));
 	}
 
 	public User send(User user) {
-		
+
 		return user = repo.save(user);
 	}
-	
+
 	public User fromDTO(UserDTO objDTO) {
-		
+
 		return new User(objDTO.getId(), objDTO.getName(), objDTO.getEmail());
 	}
+
+	public void deletar(String id) {
+
+		repo.deleteById(id);
+	}
+	
+	public void updateDate(User newObj, User obj) {
+		
+		newObj.setName(obj.getName());
+		newObj.setEmail(obj.getEmail());
+		
+	}
+	
+	
+	public User update(User obj) {
+		
+		User newObj = findId(obj.getId());
+		updateDate(newObj, obj);
+		return repo.save(newObj);
+		
+		
+	}
+	
 	
 }
